@@ -14,3 +14,8 @@ definierten Container können mit dem Befehl `docker-compose up` gestartet werde
 * Container wieder starten: `docker-compose start`
 
 <br>
+
+Es wird eine Instanz vom Redis-Fork [ValKey](https://valkey.io) verwendet, 
+siehe z.B. auch [hier](https://www.heise.de/select/ct/2024/9/2409311024131767794).
+
+<br>
