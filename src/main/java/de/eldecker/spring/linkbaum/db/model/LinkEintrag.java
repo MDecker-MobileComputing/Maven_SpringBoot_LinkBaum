@@ -1,6 +1,8 @@
 package de.eldecker.spring.linkbaum.db.model;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 
@@ -19,6 +21,15 @@ public class LinkEintrag implements Serializable {
     
     /** URL des Links, z.B. "https://www.facebook.com/username". */
     private URL _url;
+    
+    public static LinkEintrag erzeugeLinkEintrag( String linkTitel, 
+                                                  String urlString ) 
+                             throws MalformedURLException {
+
+        final URL url = URI.create( urlString ).toURL(); // throws MalformedURLException
+        
+        return new LinkEintrag( linkTitel, url );
+    }
     
     public LinkEintrag() {
         

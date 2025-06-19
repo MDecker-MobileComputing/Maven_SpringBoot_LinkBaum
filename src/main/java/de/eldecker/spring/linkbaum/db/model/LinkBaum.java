@@ -14,6 +14,8 @@ import org.springframework.data.redis.core.RedisHash;
 @RedisHash("LinkBaum")
 public class LinkBaum {
 
+    private static final int DEFAULT_ANZAHL_LINKEINTRAEGE = 5;
+    
     private String id;
     
     private String titel;
@@ -28,7 +30,7 @@ public class LinkBaum {
         titel        = "";
         beschreibung = "";
         
-        linkEintragList = new ArrayList<>(5);
+        linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
     }
     
     public LinkBaum( String id, String titel, String beschreibung ) {
@@ -36,7 +38,7 @@ public class LinkBaum {
         this.titel        = titel;
         this.beschreibung = beschreibung;
         
-        linkEintragList = new ArrayList<>(5);
+        linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
     }
 
     public String getTitel() {
@@ -44,7 +46,7 @@ public class LinkBaum {
         return titel;
     }
 
-    public void setTitel(String titel) {
+    public void setTitel( String titel ) {
         
         this.titel = titel;
     }
@@ -54,7 +56,7 @@ public class LinkBaum {
         return beschreibung;
     }
 
-    public void setBeschreibung(String beschreibung) {
+    public void setBeschreibung( String beschreibung ) {
         
         this.beschreibung = beschreibung;
     }
@@ -64,9 +66,22 @@ public class LinkBaum {
         return linkEintragList;
     }
 
-    public void setLinkEintragList(List<LinkEintrag> linkEintragList) {
+    public void setLinkEintragList( List<LinkEintrag> linkEintragList ) {
         
         this.linkEintragList = linkEintragList;
+    }
+    
+    public void addLinkEintraege( LinkEintrag... linkEintrage ) {
+        
+        if ( linkEintragList == null ) {
+            
+            linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
+        }
+
+        for ( LinkEintrag linkEintrag : linkEintrage ) {
+            
+            linkEintragList.add( linkEintrag );
+        }
     }
 
     public void setId( String id ) {
