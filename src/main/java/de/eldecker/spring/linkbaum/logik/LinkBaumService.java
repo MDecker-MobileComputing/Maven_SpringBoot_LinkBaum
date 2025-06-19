@@ -29,6 +29,7 @@ public class LinkBaumService {
      */
     private static final int MAX_ANZAHL_INKREMENT_VERSUCHE = 3;
 
+    /** Repo-Bean für Zugriff auf Link-Baum-Objekte in Redis. */
     @Autowired
     private LinkBaumRepo _linkBaumRepo;
 
@@ -37,43 +38,69 @@ public class LinkBaumService {
      * Erhöht den Zugriffs-Zähler für den LinkBaum mit der angegebenen ID um {@code +1}.
      * 
      * @param linkBaumKey Schlüssel des Link-Baums, dessen Zugriffs-Zähler erhöht werden soll.
-     * 
-     * @return Zahl der Zugriffe nach der Erhöhung, oder {@code -1}, wenn kein LinkBaum 
-     *         mit {@code linkBaumId} gefunden wurde, oder {@code -2} wenn die maximale Anzahl
-     *         von Versuchen zum Erhöhen des Zugriffs-Zählers erreicht wurde, der neue
-     *         Wert auf der Datenbank aber nicht gespeichert werden konnte.
      */
-    public int erhoeheZugriffsZaehler( String linkBaumKey ) {
+    public void erhoeheZugriffsZaehler( String linkBaumKey ) {
 
+        for ( int i = 1; i <= MAX_ANZAHL_INKREMENT_VERSUCHE; i++ ) {
+            
+            try {
+                
+                final int ergebnis = einInkrementVersuch( linkBaumKey ); // throws OptimisticLockingFailureException
+                
+                if ( ergebnis == -1 ) {
+                    
+                    LOG.error( "Link-Baum mit Key=\"{}\" für Erhöhung Zähler nicht gefunden.", linkBaumKey );
+                    return;
+                    
+                } else {
+                    
+                    LOG.info("Zugriffszähler für Link-Baum mit Key=\"{}\" erhöht auf {}.",
+                            linkBaumKey, ergebnis );
+                    return;
+                }
+            }
+            catch ( OptimisticLockingFailureException ex ) {
+                
+                LOG.warn( "Exception beim Erhöhen des Zugriffs-Zählers für Link-Baum mit Key=\"{}\" (Versuch {}/{}).", 
+                          linkBaumKey, i, MAX_ANZAHL_INKREMENT_VERSUCHE );
+            }
+        }
+        
+        LOG.error(
+                "Zugriffszähler für Link-Baum mit Key=\"{}\" konnte nicht innerhalb von {} Versuchen erhöht werden.",
+                linkBaumKey, MAX_ANZAHL_INKREMENT_VERSUCHE );
+    }
+    
+    
+    /**
+     * Einzelner Versuch, den Zugriffs-Zähler für den Link-Baum mit {@code linkBaumKey} zu erhöhen.
+     * 
+     * @param linkBaumKey Schlüssel des Link-Baums, dessen Zugriffs-Zähler erhöht werden soll.
+     * 
+     * @return Zahl der Zugriffe nach der Erhöhung, oder {@code -1}, wenn kein Link-Baum mit
+     *         {@code linkBaumId} gefunden wurde.
+     *  
+     * @throws OptimisticLockingFailureException Zugriffs-Zähler konnte nicht erhöht werden, weil
+     *                                           ein anderer Thread den Link-Baum zwischenzeitlich 
+     *                                           geändert hat.
+     */
+    private int einInkrementVersuch( String linkBaumKey ) throws OptimisticLockingFailureException {
+        
         final Optional<LinkBaum> linkBaumOptional = _linkBaumRepo.findById( linkBaumKey );
         if ( linkBaumOptional.isEmpty() ) {
 
-            LOG.error( "Kein LinkBaum mit ID={} gefunden.", linkBaumKey );
-            return -1;
-
-        } else {
-
-
-            for ( int i = 1; i <= MAX_ANZAHL_INKREMENT_VERSUCHE; i++ ) {
-
-                try {
-
-                    // Versuche, den Zugriffs-Zähler zu erhöhen
-                    final LinkBaum linkBaum = linkBaumOptional.get();
-                    linkBaum.setZugriffsZaehler( linkBaum.getZugriffsZaehler() + 1 );
-                    _linkBaumRepo.save( linkBaum );
-
-                    return linkBaum.getZugriffsZaehler();
-                }
-                catch ( OptimisticLockingFailureException ex ) {
-
-                    LOG.warn( "OptimisticLockingFailureException beim Erhöhen des Zugriffs-Zählers für LinkBaum mit ID={} (Versuch {}/{}).", 
-                              linkBaumKey, i, MAX_ANZAHL_INKREMENT_VERSUCHE );
-                }                
-            } // for
-
-            LOG.error( "Gebe Versuche, den Zugriffs-Zähler für LinkBaum mit ID={} zu erhöhen, auf. ", linkBaumKey );
-            return -2;
-        }
+            return -1;  
+        } 
+        
+        final LinkBaum linkBaum = linkBaumOptional.get();
+        
+        final int zaehlerVorher  = linkBaum.getZugriffszaehler();
+        final int zaehlerNachher = zaehlerVorher + 1;
+        linkBaum.setZugriffszaehler( zaehlerNachher );
+        
+        _linkBaumRepo.save( linkBaum ); // throws OptimisticLockingFailureException
+        
+        return zaehlerNachher;
     }
+    
 }

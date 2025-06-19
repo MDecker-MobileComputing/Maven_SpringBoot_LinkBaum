@@ -1,12 +1,11 @@
 package de.eldecker.spring.linkbaum.db.model;
 
-import jakarta.persistence.Version;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.redis.core.RedisHash;
 
 
