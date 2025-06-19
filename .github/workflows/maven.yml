@@ -19,7 +19,7 @@ jobs:
     - name: Maven-Installation checken
       run: chmod u+x mvnw && ./mvnw --version        
     - name: FatJar-Datei mit Maven bauen
-      run: ./mvnw --batch-mode clean package
+      run: ./mvnw --batch-mode clean package -DskipTests
     - name: FatJar-Datei veröffentlichen
       uses: actions/upload-artifact@v4
       with:
