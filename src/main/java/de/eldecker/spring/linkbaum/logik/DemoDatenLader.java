@@ -31,13 +31,14 @@ public class DemoDatenLader implements ApplicationRunner {
             
         } else {
 
-            final LinkEintrag eintrag1 = new LinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"               ); // throws MalformedURLException
-            final LinkEintrag eintrag2 = new LinkEintrag( "LinkedIn" , "https://www.linkedin.com/school/dhbwkarlsruhe/posts/" );
-            final LinkEintrag eintrag3 = new LinkEintrag( "Instagram", "https://www.instagram.com/dhbwkarlsruhe/"             );
-            final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"        );
+            final LinkEintrag eintrag1 = new LinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"                   );
+            final LinkEintrag eintrag2 = new LinkEintrag( "LinkedIn" , "https://www.linkedin.com/school/dhbwkarlsruhe/posts/"     );
+            final LinkEintrag eintrag3 = new LinkEintrag( "Instagram", "https://www.instagram.com/dhbwkarlsruhe/"                 );
+            final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"            );
+            final LinkEintrag eintrag5 = new LinkEintrag( "YouTube"  , "https://www.youtube.com/channel/UCe5bTJ_lECQ7DiU_NXQMilQ" );
             
             final LinkBaum linkBaum1 = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
-            linkBaum1.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4 );
+            linkBaum1.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
             
             _linkBaumRepo.save( linkBaum1 );
             

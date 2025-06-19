@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head>
+    <title th:text="'Link-Baum: ' + ${linkbaum.getTitel()}"></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/linkbaum-stil.css"/>
+</head>
+<body>
+
+    <h1 th:text="'Link-Baum: ' + ${linkbaum.getTitel()}"></h1>
+
+    <p th:text="${linkbaum.getBeschreibung()}"></p>
+    <br><br>
+
+    <ul th:each="eintrag : ${linkbaum.getLinkEintragList()}">
+        <li>
+            <a th:href="@{${eintrag.getUrl()}}" 
+               th:text="${eintrag.getLinkTitel()}"
+               target="_blank">
+            </a>
+        </li>
+    </ul>
+
+</body>
+</html>
+
+

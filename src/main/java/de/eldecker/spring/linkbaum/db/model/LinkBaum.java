@@ -60,7 +60,7 @@ public class LinkBaum {
 
     public void setTitel( String titel ) {
         
-        this._titel = titel;
+        _titel = titel;
     }
 
     public String getBeschreibung() {
@@ -106,31 +106,30 @@ public class LinkBaum {
         return _id;
     }
 
+    /**
+     * Weil die ID von uns selbst bei Befüllung des Objekts gesetzt wird
+     * (und nicht von <i>Spring Data</i> verwaltet), können wir hier 
+     * einfach den Hash-Code der ID zurückgeben. 
+     */
     @Override
     public int hashCode() {
 
-        return Objects.hash( _id, _titel, _beschreibung, _linkEintragList );
+        return _id.hashCode();
     }
     
     @Override
     public boolean equals( Object obj ) {
 
-        if ( this == obj ) {
-            
-            return true;
-        }
-        
         if ( obj == null ) {
             
             return false;
         }
-            
 
+        
         if ( obj instanceof LinkBaum that ) {
             
-            return Objects.equals( _titel          , that._titel           ) && 
-                   Objects.equals( _beschreibung   , that._beschreibung    ) &&
-                   Objects.equals( _linkEintragList, that._linkEintragList );
+            return Objects.equals( _id , that._id ); // siehe Kommentar für Methode hashCode()
+                    
         } else {
             
             return false;
@@ -140,7 +139,7 @@ public class LinkBaum {
     @Override
     public String toString() {
 
-        return "LinkBaum \"" + _titel + "\"";
+        return "LinkBaum mit ID=" + _id;
     }
 
 }
