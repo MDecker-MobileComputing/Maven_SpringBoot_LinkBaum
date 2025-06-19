@@ -1,6 +1,5 @@
 package de.eldecker.spring.linkbaum.logik;
 
-import static de.eldecker.spring.linkbaum.db.model.LinkEintrag.erzeugeLinkEintrag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +31,10 @@ public class DemoDatenLader implements ApplicationRunner {
             
         } else {
 
-            final LinkEintrag eintrag1 = erzeugeLinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"               ); // throws MalformedURLException
-            final LinkEintrag eintrag2 = erzeugeLinkEintrag( "LinkedIn" , "https://www.linkedin.com/school/dhbwkarlsruhe/posts/" );
-            final LinkEintrag eintrag3 = erzeugeLinkEintrag( "Instagram", "https://www.instagram.com/dhbwkarlsruhe/"             );
-            final LinkEintrag eintrag4 = erzeugeLinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"        );
+            final LinkEintrag eintrag1 = new LinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"               ); // throws MalformedURLException
+            final LinkEintrag eintrag2 = new LinkEintrag( "LinkedIn" , "https://www.linkedin.com/school/dhbwkarlsruhe/posts/" );
+            final LinkEintrag eintrag3 = new LinkEintrag( "Instagram", "https://www.instagram.com/dhbwkarlsruhe/"             );
+            final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"        );
             
             final LinkBaum linkBaum1 = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
             linkBaum1.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4 );

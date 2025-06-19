@@ -1,9 +1,6 @@
 package de.eldecker.spring.linkbaum.db.model;
 
 import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -19,17 +16,14 @@ public class LinkEintrag implements Serializable {
     /** Titel des Links, z.B. "Facebook-Profil". */
     private String _linkTitel;
     
-    /** URL des Links, z.B. "https://www.facebook.com/username". */
-    private URL _url;
-    
-    public static LinkEintrag erzeugeLinkEintrag( String linkTitel, 
-                                                  String urlString ) 
-                             throws MalformedURLException {
+    /** 
+     * URL des Links, z.B. "https://www.facebook.com/username".
+     * <br><br>
+     * 
+     * Wir können hier nicht die Klasse {@code URL} verwenden, da diese
+     * nicht voll serialisierbar ist. */
+    private String _url;
 
-        final URL url = URI.create( urlString ).toURL(); // throws MalformedURLException
-        
-        return new LinkEintrag( linkTitel, url );
-    }
     
     public LinkEintrag() {
         
@@ -37,10 +31,10 @@ public class LinkEintrag implements Serializable {
        _url = null;
     }
     
-    public LinkEintrag( String linkTitel, URL url ) {
+    public LinkEintrag( String linkTitel, String url ) {
         
         _linkTitel = linkTitel;
-        _url = url;
+        _url       = url;
     }
 
     public String getLinkTitel() {
@@ -53,12 +47,12 @@ public class LinkEintrag implements Serializable {
         _linkTitel = linkTitel;
     }
 
-    public URL getUrl() {
+    public String getUrl() {
         
         return _url;
     }
 
-    public void set_url( URL url ) {
+    public void setUrl( String url ) {
         
         _url = url;
     }
