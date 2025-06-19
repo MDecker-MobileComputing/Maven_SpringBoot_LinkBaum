@@ -1,5 +1,7 @@
 package de.eldecker.spring.linkbaum.db.model;
 
+import jakarta.persistence.Version;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,9 +34,18 @@ public class LinkBaum {
     private String _titel;
     
     private String _beschreibung;
+
+    private int _zugriffszaehler = 0;
     
     private List<LinkEintrag> _linkEintragList;
+
+    /** Version-Attribut wird für optimistische Sperre benötigt. */
+    @Version
+    private Long _version; 
         
+    /**
+     * Default-Konstruktor.
+     */
     public LinkBaum() {
 
         _id           = "";
@@ -52,6 +63,16 @@ public class LinkBaum {
         
         _linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
     }
+
+    public void setId( String id ) {
+        
+        _id = id;
+    }
+    
+    public String getId() {
+        
+        return _id;
+    }    
 
     public String getTitel() {
         
@@ -83,6 +104,20 @@ public class LinkBaum {
         _linkEintragList = linkEintragList;
     }
     
+    public int getZugriffszaehler() {
+
+        return _zugriffszaehler;
+    }
+
+    public void setZugriffszaehler( int zugriffszaehler ) {
+
+        _zugriffszaehler = zugriffszaehler;
+    }
+
+    /**
+     * Convenience-Methode, um einen oder mehrere LinkEinträge
+     * hinzuzufügen.
+     */
     public void addLinkEintraege( LinkEintrag... linkEintrage ) {
         
         if ( _linkEintragList == null ) {
@@ -96,15 +131,7 @@ public class LinkBaum {
         }
     }
 
-    public void setId( String id ) {
-        
-        _id = id;
-    }
-    
-    public String getId() {
-        
-        return _id;
-    }
+
 
     /**
      * Weil die ID von uns selbst bei Befüllung des Objekts gesetzt wird

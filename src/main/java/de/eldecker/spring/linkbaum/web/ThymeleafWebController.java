@@ -2,6 +2,8 @@ package de.eldecker.spring.linkbaum.web;
 
 import static java.lang.String.format;
 
+import de.eldecker.spring.linkbaum.logik.LinkBaumService;
+
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -28,6 +30,9 @@ public class ThymeleafWebController {
     @Autowired
     private LinkBaumRepo _linkBaumRepo;
 
+    @Autowired
+    private LinkBaumService _linkBaumService;
+
     /**
      * Seite mit Link-Baum anzeigen.
      * 
@@ -50,6 +55,8 @@ public class ThymeleafWebController {
             LOG.info( "Link-Baum mit ID \"{}\" gefunden.", linkBaumKey );
             
             model.addAttribute( "linkbaum", linkBaum );
+
+            _linkBaumService.erhoeheZugriffsZaehler( linkBaumKey );
             
             return "linkbaum";
             
