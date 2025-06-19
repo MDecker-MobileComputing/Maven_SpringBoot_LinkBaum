@@ -4,7 +4,7 @@
 
 Dieses Repo enthält eine Spring-Boot-Anwendung, die die Verwendung der Key-Value-Datenbank "Redis" demonstriert.
 Die Anwendung ist eine Web-App, die einen sog. 
-[Link-Baum](https://www.it-recht-kanzlei.de/wonderlink-dsgvo-konforme-linkbaum-loesung.html) darstellt.
+[Link-Baum](https://later.com/social-media-glossary/link-tree/) darstellt.
 
 Für die Anwendung von Redis wird [Spring Data Redis](https://spring.io/projects/spring-data-redis)
 verwendet, siehe hierzu auch [dieses Tutorial](https://www.baeldung.com/spring-data-redis-tutorial).
