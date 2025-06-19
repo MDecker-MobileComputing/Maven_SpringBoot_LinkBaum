@@ -1,6 +1,8 @@
 package de.eldecker.spring.linkbaum.logik;
 
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +39,19 @@ public class DemoDatenLader implements ApplicationRunner {
             final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"            );
             final LinkEintrag eintrag5 = new LinkEintrag( "YouTube"  , "https://www.youtube.com/channel/UCe5bTJ_lECQ7DiU_NXQMilQ" );
             
-            final LinkBaum linkBaum1 = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
-            linkBaum1.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
+            LinkBaum linkBaum1a = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
+            linkBaum1a.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
             
-            _linkBaumRepo.save( linkBaum1 );
+            //linkBaum1.setVersion( 1L );
+            
+            LinkBaum linkBaum1b = _linkBaumRepo.save( linkBaum1a );
+            LOG.info( "Version1a: {}", linkBaum1b.getVersion() );
+            
+            LinkBaum existing = _linkBaumRepo.findById(linkBaum1a.getId()).get();
+            LOG.info( "Version1b: {}", linkBaum1a.getVersion() );
+            existing.setBeschreibung( "Duale Hochschule Baden-Württemberg in Karlsruhe" );
+            //existing.setVersion( 2L );
+            _linkBaumRepo.save( existing );
             
             final long anzahlNachher = _linkBaumRepo.count();
             LOG.info( "Anzahl Link-Bäume in Datenbank nach dem Laden der Demo-Daten: {}", anzahlNachher );

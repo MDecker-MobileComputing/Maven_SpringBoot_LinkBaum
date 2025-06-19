@@ -43,16 +43,16 @@
 
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
         </dependency>
 
-        <!-- Redis-Treiber -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>6.0.0</version><!-- Aktuelle Version: https://mvnrepository.com/artifact/redis.clients/jedis -->
+            <version>5.2.0</version>
         </dependency>
+
 
     </dependencies>
 

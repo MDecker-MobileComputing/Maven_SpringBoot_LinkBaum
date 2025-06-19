@@ -38,9 +38,15 @@ public class LinkBaum {
     
     private List<LinkEintrag> _linkEintragList;
 
-    /** Version-Attribut wird für optimistische Sperre benötigt. */
+    /** 
+     * Version-Attribut wird für optimistische Sperre benötigt. 
+     * Wenn ein von Redis verwalteten Objekt ein Version-Attribut hat,
+     * dann wirft die Repo-Methode {@code save()} eine Exception,
+     * wenn das Objekt in der Zwischenzeit von einem anderen Prozess
+     * geändert wurde.
+     */
     @Version
-    private Long _version; 
+    private Long version;
         
     /**
      * Default-Konstruktor.
@@ -112,6 +118,16 @@ public class LinkBaum {
 
         _zugriffszaehler = zugriffszaehler;
     }
+    
+    public Long getVersion() {
+
+        return version;
+    }
+    
+    public void setVersion( Long version ) {
+
+        this.version = version;
+    }
 
     /**
      * Convenience-Methode, um einen oder mehrere LinkEinträge
@@ -131,36 +147,6 @@ public class LinkBaum {
     }
 
 
-
-    /**
-     * Weil die ID von uns selbst bei Befüllung des Objekts gesetzt wird
-     * (und nicht von <i>Spring Data</i> verwaltet), können wir hier 
-     * einfach den Hash-Code der ID zurückgeben. 
-     */
-    @Override
-    public int hashCode() {
-
-        return _id.hashCode();
-    }
-    
-    @Override
-    public boolean equals( Object obj ) {
-
-        if ( obj == null ) {
-            
-            return false;
-        }
-
-        
-        if ( obj instanceof LinkBaum that ) {
-            
-            return Objects.equals( _id , that._id ); // siehe Kommentar für Methode hashCode()
-                    
-        } else {
-            
-            return false;
-        }
-    }
     
     @Override
     public String toString() {
