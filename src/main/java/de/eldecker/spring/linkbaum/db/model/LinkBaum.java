@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 
@@ -17,8 +18,17 @@ public class LinkBaum {
 
     private static final int DEFAULT_ANZAHL_LINKEINTRAEGE = 5;
     
+    /**
+     * ID wird selbst gesetzt, weil sie als Pfadparameter in der URL
+     * verwendet wird und in den meisten Fällen auch sprechend sein
+     * wird, z.B. Name des Influencers. Wenn als Key "abc" gewählt
+     * wird, dann wird in Redis/Valkey folgender Key verwendet:
+     * {@code LinkBaum:abc}
+     */
+    @Id
     private String _id;
     
+    /** Titel enthält Name Influencer/Organisation oder Thema. */
     private String _titel;
     
     private String _beschreibung;
@@ -36,6 +46,7 @@ public class LinkBaum {
     
     public LinkBaum( String id, String titel, String beschreibung ) {
         
+        _id           = id;
         _titel        = titel;
         _beschreibung = beschreibung;
         
@@ -116,9 +127,10 @@ public class LinkBaum {
             
 
         if ( obj instanceof LinkBaum that ) {
-            return Objects.equals( _titel          , that._titel          ) && 
-                   Objects.equals( _beschreibung   , that._beschreibung   ) &&
-                   Objects.equals( _linkEintragList, that._linkEintragList);
+            
+            return Objects.equals( _titel          , that._titel           ) && 
+                   Objects.equals( _beschreibung   , that._beschreibung    ) &&
+                   Objects.equals( _linkEintragList, that._linkEintragList );
         } else {
             
             return false;

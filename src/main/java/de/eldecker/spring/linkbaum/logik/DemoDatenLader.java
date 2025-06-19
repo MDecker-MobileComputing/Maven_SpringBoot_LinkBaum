@@ -27,7 +27,7 @@ public class DemoDatenLader implements ApplicationRunner {
         LOG.info( "Anzahl Link-Bäume in Datenbank: {}", anzahlVorher );
         if ( anzahlVorher > 0 ) {
 
-            LOG.info( "Es sind bereits ink-Bäume in der Datenbank, lade deshalb keine Demo-Daten." ); 
+            LOG.info( "Es sind bereits Link-Bäume in der Datenbank, lade deshalb keine Demo-Daten." ); 
             
         } else {
 
