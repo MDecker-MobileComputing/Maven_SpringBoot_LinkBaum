@@ -1,0 +1,21 @@
+version: '3.8'
+
+# https://hub.docker.com/r/valkey/valkey/
+# valkey ist Fork von Redis
+# https://www.heise.de/select/ct/2024/9/2409311024131767794
+services:
+  valkey:
+    image: valkey/valkey:8.1
+    container_name: valkey
+    command: ["valkey-server", "--save", "60", "1"] # RDB-Modus: Speichert alle 60 Sekunden Snapshot, wenn mindestens 1 Änderung erfolgt ist
+    ports:
+      - "6379:6379"
+
+
+  # Web-UI for Redis: https://redis.io/insight/
+  # Überblick weitere Redis-UIs: https://uibakery.io/blog/redis-gui-tools
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight4ggt
+    ports:
+      - "5540:5540"
