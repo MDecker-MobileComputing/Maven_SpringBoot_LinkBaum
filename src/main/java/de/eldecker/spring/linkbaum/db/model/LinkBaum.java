@@ -2,6 +2,7 @@ package de.eldecker.spring.linkbaum.db.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.data.redis.core.RedisHash;
 
@@ -16,83 +17,119 @@ public class LinkBaum {
 
     private static final int DEFAULT_ANZAHL_LINKEINTRAEGE = 5;
     
-    private String id;
+    private String _id;
     
-    private String titel;
+    private String _titel;
     
-    private String beschreibung;
+    private String _beschreibung;
     
-    private List<LinkEintrag> linkEintragList;
+    private List<LinkEintrag> _linkEintragList;
         
     public LinkBaum() {
 
-        id           = "";
-        titel        = "";
-        beschreibung = "";
+        _id           = "";
+        _titel        = "";
+        _beschreibung = "";
         
-        linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
+        _linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
     }
     
     public LinkBaum( String id, String titel, String beschreibung ) {
         
-        this.titel        = titel;
-        this.beschreibung = beschreibung;
+        _titel        = titel;
+        _beschreibung = beschreibung;
         
-        linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
+        _linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
     }
 
     public String getTitel() {
         
-        return titel;
+        return _titel;
     }
 
     public void setTitel( String titel ) {
         
-        this.titel = titel;
+        this._titel = titel;
     }
 
     public String getBeschreibung() {
         
-        return beschreibung;
+        return _beschreibung;
     }
 
     public void setBeschreibung( String beschreibung ) {
         
-        this.beschreibung = beschreibung;
+        _beschreibung = beschreibung;
     }
 
     public List<LinkEintrag> getLinkEintragList() {
         
-        return linkEintragList;
+        return _linkEintragList;
     }
 
     public void setLinkEintragList( List<LinkEintrag> linkEintragList ) {
         
-        this.linkEintragList = linkEintragList;
+        _linkEintragList = linkEintragList;
     }
     
     public void addLinkEintraege( LinkEintrag... linkEintrage ) {
         
-        if ( linkEintragList == null ) {
+        if ( _linkEintragList == null ) {
             
-            linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
+            _linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
         }
 
         for ( LinkEintrag linkEintrag : linkEintrage ) {
             
-            linkEintragList.add( linkEintrag );
+            _linkEintragList.add( linkEintrag );
         }
     }
 
     public void setId( String id ) {
         
-        this.id = id;
+        _id = id;
     }
     
     public String getId() {
         
-        return id;
+        return _id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash( _id, _titel, _beschreibung, _linkEintragList );
     }
     
+    @Override
+    public boolean equals( Object obj ) {
+
+        if ( this == obj ) {
+            
+            return true;
+        }
+        
+        if ( obj == null ) {
+            
+            return false;
+        }
+            
+
+        if ( obj instanceof LinkBaum that ) {
+            return Objects.equals( _titel          , that._titel          ) && 
+                   Objects.equals( _beschreibung   , that._beschreibung   ) &&
+                   Objects.equals( _linkEintragList, that._linkEintragList);
+        } else {
+            
+            return false;
+        }
+    }
+    
+    @Override
+    public String toString() {
+
+        return "LinkBaum \"" + _titel + "\"";
+    }
+
 }
 
