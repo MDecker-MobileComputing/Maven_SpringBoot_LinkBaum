@@ -37,6 +37,14 @@ public class LinkBaumService {
     /**
      * {@code LinkBaum}-Objekt speichern und dabei Version auf {@code 1} setzen oder
      * um {@code +1} erhöhen.
+     * <br><br>
+     * 
+     * Diese Methode ist erforderlich, weil <i>Spring Data Redis</i> anscheinend nicht
+     * das mit {@code Version} annotierte Feld befüllt/verwaltet; zum Speichern von 
+     * Änderungen ist es aber erforderlich, dass das geänderte Objekt eine höhere
+     * Versionsnummer hat, weil sonst die {@code save()}-Methode aus dem Repo 
+     * eine {@code DuplicateKeyException} wirft, da intern dann ein Insert statt
+     * ein Update ausgeführt wird.
      * 
      * @param linkBaum Objekt, das gespeichert werden soll.
      * 
