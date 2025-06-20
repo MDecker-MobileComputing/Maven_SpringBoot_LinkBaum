@@ -14,12 +14,18 @@
 
     <ul th:each="eintrag : ${linkbaum.getLinkEintragList()}">
         <li>
-            <a th:href="@{${eintrag.getUrl()}}" 
+            <a th:href="@{${eintrag.getUrl()}}"
                th:text="${eintrag.getLinkTitel()}"
                target="_blank">
             </a>
         </li>
     </ul>
+    <br><br>
+
+    <p class="klein">
+        Anzahl Zugriff:
+        <span th:text="${linkbaum.getZugriffszaehler()}"></span>
+    </p>
 
 </body>
 </html>

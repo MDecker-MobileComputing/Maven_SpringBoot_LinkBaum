@@ -1,16 +1,14 @@
 package de.eldecker.spring.linkbaum.logik;
 
+import static java.util.Optional.empty;	
+
 import de.eldecker.spring.linkbaum.db.LinkBaumRepo;
 
 import de.eldecker.spring.linkbaum.db.model.LinkBaum;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 
@@ -20,14 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinkBaumService {
 
-    private final static Logger LOG = LoggerFactory.getLogger( LinkBaumService.class );
-
-    /**
-     * Maximale Anzahl an Versuchen, den Zugriffs-Zähler zu erhöhen, bevor aufgegeben wird.
-     * Wegen des "Optimistic Locking" kann es passieren, dass der Zugriffs-Zähler nicht erhöht
-     * werden kann.
-     */
-    private static final int MAX_ANZAHL_INKREMENT_VERSUCHE = 3;
 
     /** Repo-Bean für Zugriff auf Link-Baum-Objekte in Redis. */
     @Autowired
@@ -44,17 +34,13 @@ public class LinkBaumService {
      * Änderungen ist es aber erforderlich, dass das geänderte Objekt eine höhere
      * Versionsnummer hat, weil sonst die {@code save()}-Methode aus dem Repo
      * eine {@code DuplicateKeyException} wirft, da intern dann ein Insert statt
-     * ein Update ausgeführt wird.
+     * ein Update ausgeführt wird. 
      *
      * @param linkBaum Objekt, das gespeichert werden soll.
      *
      * @return Objekt mit gesetzter oder erhöhter Version.
-     *
-     * @throws OptimisticLockingFailureException Zugriffs-Zähler konnte nicht erhöht werden, weil
-     *                                           ein anderer Thread den Link-Baum zwischenzeitlich
-     *                                           geändert hat.
      */
-    public LinkBaum saveMitVersion( LinkBaum linkBaum ) throws OptimisticLockingFailureException {
+    public LinkBaum saveMitVersion( LinkBaum linkBaum ) {
 
     	final Long versionAlt = linkBaum.getVersion();
     	if ( versionAlt == null ) {
@@ -67,7 +53,7 @@ public class LinkBaumService {
     		linkBaum.setVersion( versionNeu );
     	}
 
-    	return _linkBaumRepo.save( linkBaum ); // throws OptimisticLockingFailureException
+    	return _linkBaumRepo.save( linkBaum );
     }
 
 
@@ -75,57 +61,16 @@ public class LinkBaumService {
      * Erhöht den Zugriffs-Zähler für den LinkBaum mit der angegebenen ID um {@code +1}.
      *
      * @param linkBaumKey Schlüssel des Link-Baums, dessen Zugriffs-Zähler erhöht werden soll.
+     * 
+     * @return Optional mit {@link LinkBaum}-Objekt nach Erhöhung Zähler oder leeres Optional,
+     *         wenn kein {@link LinkBaum} mit Schlüssel {@code linkBaumKey} gefunden.
      */
-    public void erhoeheZugriffsZaehler( String linkBaumKey ) {
-
-        for ( int i = 1; i <= MAX_ANZAHL_INKREMENT_VERSUCHE; i++ ) {
-
-            try {
-
-                final int ergebnis = einInkrementVersuch( linkBaumKey ); // throws OptimisticLockingFailureException
-
-                if ( ergebnis == -1 ) {
-
-                    LOG.error( "Link-Baum mit Key=\"{}\" für Erhoehung Zaehler nicht gefunden.", linkBaumKey );
-                    return;
-
-                } else {
-
-                    LOG.info( "Zugriffszaehler für Link-Baum mit Key=\"{}\" erhoeht auf {}.",
-                              linkBaumKey, ergebnis );
-                    return;
-                }
-            }
-            catch ( OptimisticLockingFailureException ex ) {
-
-                LOG.warn( "Exception beim Erhoehen des Zugriffs-Zaehlers für Link-Baum mit Key=\"{}\" (Versuch {}/{}).",
-                          linkBaumKey, i, MAX_ANZAHL_INKREMENT_VERSUCHE );
-            }
-        }
-
-        LOG.error( "Zugriffszähler für Link-Baum mit Key=\"{}\" konnte nicht innerhalb von {} Versuchen erhöht werden.",
-                   linkBaumKey, MAX_ANZAHL_INKREMENT_VERSUCHE );
-    }
-
-
-    /**
-     * Einzelner Versuch, den Zugriffs-Zähler für den Link-Baum mit {@code linkBaumKey} zu erhöhen.
-     *
-     * @param linkBaumKey Schlüssel des Link-Baums, dessen Zugriffs-Zähler erhöht werden soll.
-     *
-     * @return Zahl der Zugriffe nach der Erhöhung, oder {@code -1}, wenn kein Link-Baum mit
-     *         {@code linkBaumId} gefunden wurde.
-     *
-     * @throws OptimisticLockingFailureException Zugriffs-Zähler konnte nicht erhöht werden, weil
-     *                                           ein anderer Thread den Link-Baum zwischenzeitlich
-     *                                           geändert hat.
-     */
-    private int einInkrementVersuch( String linkBaumKey ) throws OptimisticLockingFailureException {
+    public Optional<LinkBaum> erhoeheZugriffsZaehler( String linkBaumKey ) {
 
         final Optional<LinkBaum> linkBaumOptional = _linkBaumRepo.findById( linkBaumKey );
         if ( linkBaumOptional.isEmpty() ) {
 
-            return -1;
+            return empty();
         }
 
         final LinkBaum linkBaum = linkBaumOptional.get();
@@ -134,9 +79,9 @@ public class LinkBaumService {
         final int zaehlerNachher = zaehlerVorher + 1;
         linkBaum.setZugriffszaehler( zaehlerNachher );
 
-        saveMitVersion( linkBaum ); // throws OptimisticLockingFailureException
+        saveMitVersion( linkBaum );
 
-        return zaehlerNachher;
+        return Optional.of( linkBaum );
     }
-
+    
 }

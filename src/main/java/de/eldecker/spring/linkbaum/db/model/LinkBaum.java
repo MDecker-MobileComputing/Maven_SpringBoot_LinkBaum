@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.redis.core.RedisHash;
 
+import de.eldecker.spring.linkbaum.logik.LinkBaumService;
+
 
 /**
  * Klasse ist mit @RedisHash annotiert, damit sie in Redis gespeichert
@@ -24,7 +26,7 @@ public class LinkBaum {
      * verwendet wird und in den meisten Fällen auch sprechend sein
      * wird, z.B. Name des Influencers. Wenn als Key "abc" gewählt
      * wird, dann wird in Redis/Valkey folgender Key verwendet:
-     * {@code LinkBaum:abc}
+     * "LinkBaum:abc"
      */
     @Id
     private String _id;
@@ -35,20 +37,18 @@ public class LinkBaum {
     /** Beschreibungstext, z.B. mit Kurzvorstellung des Influencers. */
     private String _beschreibung;
 
+    /** Gesamtanzahl der Aufrufe des Link-Baums. */
     private int _zugriffszaehler = 0;
     
     /** Eigentliche Links. */
     private List<LinkEintrag> _linkEintragList;
 
     /** 
-     * Version-Attribut wird für optimistische Sperre benötigt. 
-     * Wenn ein von Redis verwalteten Objekt ein Version-Attribut hat,
-     * dann wirft die Repo-Methode {@code save()} eine Exception,
-     * wenn das Objekt in der Zwischenzeit von einem anderen Prozess
-     * geändert wurde.
+	 * Version muss selbst verwaltet werden (Bug von <i>Spring Data Redis</i>?),
+	 * siehe Methode {@link LinkBaumService#saveMitVersion(LinkBaum)}.
      */
     @Version
-    private Long version;
+    private Long _version;
         
     
     /**
@@ -120,12 +120,12 @@ public class LinkBaum {
     
     public Long getVersion() {
 
-        return version;
+        return _version;
     }
     
     public void setVersion( Long version ) {
 
-        this.version = version;
+        _version = version;
     }
 
     
@@ -180,6 +180,13 @@ public class LinkBaum {
     }
     
     
+    /**
+     * String-Repräsentation des aufrufenden Objekts.
+     * 
+     * @return String mit Schlüssel und Titel des Link-Baums.
+     *         Beispiel:
+     *         <pre>Link-Baum mit ID=droidev: "Android-Entwicklung"</pre> 
+     */
     @Override
     public String toString() {
 
