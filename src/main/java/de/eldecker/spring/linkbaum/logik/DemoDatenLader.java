@@ -1,8 +1,6 @@
 package de.eldecker.spring.linkbaum.logik;
 
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,10 @@ import de.eldecker.spring.linkbaum.db.LinkBaumRepo;
 import de.eldecker.spring.linkbaum.db.model.LinkBaum;
 import de.eldecker.spring.linkbaum.db.model.LinkEintrag;
 
+/**
+ * Bean erzeugt direkt nach Start der Anwendung neue Link-Bäume, wenn noch kein
+ * einziger Link-Baum vorhanden ist.
+ */
 @Component
 public class DemoDatenLader implements ApplicationRunner {
 

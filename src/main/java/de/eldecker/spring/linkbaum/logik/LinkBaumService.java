@@ -34,7 +34,19 @@ public class LinkBaumService {
     private LinkBaumRepo _linkBaumRepo;
 
     
-    public LinkBaum saveMitVersion( LinkBaum linkBaum ) {
+    /**
+     * {@code LinkBaum}-Objekt speichern und dabei Version auf {@code 1} setzen oder
+     * um {@code +1} erhöhen.
+     * 
+     * @param linkBaum Objekt, das gespeichert werden soll.
+     * 
+     * @return Objekt mit gesetzter oder erhöhter Version. 
+     * 
+     * @throws OptimisticLockingFailureException Zugriffs-Zähler konnte nicht erhöht werden, weil
+     *                                           ein anderer Thread den Link-Baum zwischenzeitlich 
+     *                                           geändert hat.
+     */
+    public LinkBaum saveMitVersion( LinkBaum linkBaum ) throws OptimisticLockingFailureException {
     	
     	final Long versionAlt = linkBaum.getVersion();
     	if ( versionAlt == null ) {
@@ -47,9 +59,10 @@ public class LinkBaumService {
     		linkBaum.setVersion( versionNeu );
     	}
     	
-    	return _linkBaumRepo.save( linkBaum );    	
+    	return _linkBaumRepo.save( linkBaum ); // throws OptimisticLockingFailureException
     }
 
+    
     /**
      * Erhöht den Zugriffs-Zähler für den LinkBaum mit der angegebenen ID um {@code +1}.
      * 
@@ -114,7 +127,7 @@ public class LinkBaumService {
         final int zaehlerNachher = zaehlerVorher + 1;
         linkBaum.setZugriffszaehler( zaehlerNachher );
         
-        _linkBaumRepo.save( linkBaum ); // throws OptimisticLockingFailureException
+        saveMitVersion( linkBaum ); // throws OptimisticLockingFailureException
         
         return zaehlerNachher;
     }

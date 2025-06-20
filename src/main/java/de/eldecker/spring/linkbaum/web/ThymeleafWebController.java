@@ -57,7 +57,7 @@ public class ThymeleafWebController {
             
             model.addAttribute( "linkbaum", linkBaum );
 
-            //_linkBaumService.erhoeheZugriffsZaehler( linkBaumKey );
+            _linkBaumService.erhoeheZugriffsZaehler( linkBaumKey );
             
             return "linkbaum";
             
