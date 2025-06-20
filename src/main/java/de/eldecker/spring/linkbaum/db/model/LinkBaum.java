@@ -32,10 +32,12 @@ public class LinkBaum {
     /** Titel enthält Name Influencer/Organisation oder Thema. */
     private String _titel;
     
+    /** Beschreibungstext, z.B. mit Kurzvorstellung des Influencers. */
     private String _beschreibung;
 
     private int _zugriffszaehler = 0;
     
+    /** Eigentliche Links. */
     private List<LinkEintrag> _linkEintragList;
 
     /** 
@@ -48,16 +50,13 @@ public class LinkBaum {
     @Version
     private Long version;
         
+    
     /**
      * Default-Konstruktor.
      */
     public LinkBaum() {
 
-        _id           = "";
-        _titel        = "";
-        _beschreibung = "";
-        
-        _linkEintragList = new ArrayList<>( DEFAULT_ANZAHL_LINKEINTRAEGE );
+    	this( "", "", "" );    	
     }
     
     public LinkBaum( String id, String titel, String beschreibung ) {
@@ -129,9 +128,12 @@ public class LinkBaum {
         this.version = version;
     }
 
+    
     /**
      * Convenience-Methode, um einen oder mehrere LinkEinträge
      * hinzuzufügen.
+     * 
+     * @param linkEintrage Link-Einträge, die hinzuzufügen sind
      */
     public void addLinkEintraege( LinkEintrag... linkEintrage ) {
         
@@ -146,12 +148,42 @@ public class LinkBaum {
         }
     }
 
+    
+    @Override
+    public int hashCode() {
+    	
+    	return Objects.hash( _id, 
+    			             _beschreibung, 
+    			             _zugriffszaehler, 
+    			             _linkEintragList 
+    			           );    	
+    }
 
+    
+    @Override
+    public boolean equals( Object obj ) {
+    	
+    	if ( obj == null ) { return false; }
+    	if ( obj == this ) { return true;  }
+    	
+    	if ( obj instanceof LinkBaum that ) {
+    		
+    		return _id.equals(              that._id              ) &&
+    			   _beschreibung.equals(    that._beschreibung    ) &&
+    			   _linkEintragList.equals( that._linkEintragList ) &&
+     			   _zugriffszaehler == that._zugriffszaehler;
+
+    	} else {
+    		
+    		return false;
+    	}
+    }
+    
     
     @Override
     public String toString() {
 
-        return "LinkBaum mit ID=" + _id;
+        return String.format( "Link-Baum mit ID={}: \"{}\"", _id, _titel );        		
     }
 
 }

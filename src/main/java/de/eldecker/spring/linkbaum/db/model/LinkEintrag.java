@@ -57,25 +57,19 @@ public class LinkEintrag implements Serializable {
         _url = url;
     }
     
-    @Override
-    public String toString() {
-        
-        return "LinkEintrag [linkTitel=" + _linkTitel + ", url=" + _url + "]";
-    }
     
     @Override
     public int hashCode() {
 
         return Objects.hash( _linkTitel, _url );
     }
+
     
     @Override
     public boolean equals( Object obj ) {
 
-        if (this == obj) {
-            
-            return true;
-        }
+    	if ( obj == null ) { return false; }
+    	if ( obj == this ) { return true;  }
 
         if ( obj instanceof LinkEintrag that) {
             
@@ -87,5 +81,12 @@ public class LinkEintrag implements Serializable {
             return true;
         }
     }
+
     
+    @Override
+    public String toString() {
+        
+        return "LinkEintrag [linkTitel=" + _linkTitel + ", url=" + _url + "]";
+    }
+
 }

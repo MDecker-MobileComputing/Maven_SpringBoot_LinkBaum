@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import de.eldecker.spring.linkbaum.db.model.LinkBaum;
 
 @Repository
-public interface LinkBaumRepo extends CrudRepository<LinkBaum, String>{
+public interface LinkBaumRepo extends CrudRepository<LinkBaum, String> {
 
 }
