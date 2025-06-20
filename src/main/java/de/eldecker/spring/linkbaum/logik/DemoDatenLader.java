@@ -31,30 +31,46 @@ public class DemoDatenLader implements ApplicationRunner {
     public void run( ApplicationArguments args ) throws Exception {
         
         final long anzahlVorher = _linkBaumRepo.count();
-        LOG.info( "Anzahl Link-Bäume in Datenbank: {}", anzahlVorher );
+        LOG.info( "Anzahl Link-Baeume in Datenbank: {}", anzahlVorher );
         if ( anzahlVorher > 0 ) {
 
-            LOG.info( "Es sind bereits Link-Bäume in der Datenbank, lade deshalb keine Demo-Daten." ); 
+            LOG.info( "Es sind bereits Link-Baeume in der Datenbank, lade deshalb keine Demo-Daten." ); 
             
         } else {
-
-            final LinkEintrag eintrag1 = new LinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"                   );
-            final LinkEintrag eintrag2 = new LinkEintrag( "LinkedIn" , "https://www.linkedin.com/school/dhbwkarlsruhe/posts/"     );
-            final LinkEintrag eintrag3 = new LinkEintrag( "Instagram", "https://www.instagram.com/dhbwkarlsruhe/"                 );
-            final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"            );
-            final LinkEintrag eintrag5 = new LinkEintrag( "YouTube"  , "https://www.youtube.com/channel/UCe5bTJ_lECQ7DiU_NXQMilQ" );
             
-            LinkBaum linkBaum1 = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
-            linkBaum1.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
-            
-            linkBaum1 = _linkBaumService.saveMitVersion( linkBaum1 );
-            
-            linkBaum1.setBeschreibung( "Duale Hochschule Baden-Württemberg in Karlsruhe" );
-            
-            _linkBaumService.saveMitVersion( linkBaum1 );
-            
+        	erzeugeLinkBaumDHBW();
+        	erzeugeLinkBaumAndroidDev();
+        	
             final long anzahlNachher = _linkBaumRepo.count();
-            LOG.info( "Anzahl Link-Bäume in Datenbank nach dem Laden der Demo-Daten: {}", anzahlNachher );
+            LOG.info( "Anzahl Link-Baeume in Datenbank nach dem Laden der Demo-Daten: {}", anzahlNachher );
         }
     }
+    
+    private void erzeugeLinkBaumDHBW() {
+
+        final LinkEintrag eintrag1 = new LinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"                   );
+        final LinkEintrag eintrag2 = new LinkEintrag( "LinkedIn" , "https://www.linkedin.com/school/dhbwkarlsruhe/posts/"     );
+        final LinkEintrag eintrag3 = new LinkEintrag( "Instagram", "https://www.instagram.com/dhbwkarlsruhe/"                 );
+        final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"            );
+        final LinkEintrag eintrag5 = new LinkEintrag( "YouTube"  , "https://www.youtube.com/channel/UCe5bTJ_lECQ7DiU_NXQMilQ" );
+        
+        final LinkBaum linkBaum = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
+        linkBaum.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
+        
+        _linkBaumService.saveMitVersion( linkBaum );
+    }
+    
+    private void erzeugeLinkBaumAndroidDev() {
+    	
+    	final LinkEintrag eintrag1 = new LinkEintrag( "Blog"       , "https://android-developers.googleblog.com/"       );
+    	final LinkEintrag eintrag2 = new LinkEintrag( "Nachrichten", "https://www.androidpolice.com/"                   );  
+    	final LinkEintrag eintrag3 = new LinkEintrag( "API-Level"  , "https://apilevels.com/"                           );
+    	final LinkEintrag eintrag4 = new LinkEintrag( "API-Doku"   , "https://developer.android.com/reference/packages" );
+    	
+        final LinkBaum linkBaum = new LinkBaum( "droidev", "Android-Entwicklung", "Info-Quellen für Android-Entwickler" );
+        linkBaum.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4 );
+        
+        _linkBaumService.saveMitVersion( linkBaum );
+    }
+
 }
