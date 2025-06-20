@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import de.eldecker.spring.linkbaum.db.LinkBaumRepo;
 import de.eldecker.spring.linkbaum.db.model.LinkBaum;
-import de.eldecker.spring.linkbaum.logik.LinkBaumService;
 
 
 /**
@@ -24,6 +23,7 @@ import de.eldecker.spring.linkbaum.logik.LinkBaumService;
 public class ThymeleafWebController {
 
     private Logger LOG = LoggerFactory.getLogger( ThymeleafWebController.class );
+
 
     /** Bean für DB-Zugriff. */
     @Autowired
