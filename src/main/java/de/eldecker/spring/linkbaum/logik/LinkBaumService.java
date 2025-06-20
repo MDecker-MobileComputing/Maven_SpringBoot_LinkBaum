@@ -33,6 +33,22 @@ public class LinkBaumService {
     @Autowired
     private LinkBaumRepo _linkBaumRepo;
 
+    
+    public LinkBaum saveMitVersion( LinkBaum linkBaum ) {
+    	
+    	final Long versionAlt = linkBaum.getVersion();
+    	if ( versionAlt == null ) {
+    		
+    		linkBaum.setVersion( 1L );
+    		
+    	} else {
+    		
+    		final Long versionNeu = versionAlt + 1;
+    		linkBaum.setVersion( versionNeu );
+    	}
+    	
+    	return _linkBaumRepo.save( linkBaum );    	
+    }
 
     /**
      * Erhöht den Zugriffs-Zähler für den LinkBaum mit der angegebenen ID um {@code +1}.

@@ -22,6 +22,9 @@ public class DemoDatenLader implements ApplicationRunner {
     @Autowired
     private LinkBaumRepo _linkBaumRepo;
     
+    @Autowired
+    private LinkBaumService _linkBaumService;
+    
     @Override
     public void run( ApplicationArguments args ) throws Exception {
         
@@ -39,19 +42,14 @@ public class DemoDatenLader implements ApplicationRunner {
             final LinkEintrag eintrag4 = new LinkEintrag( "Web-Seite", "https://www.karlsruhe.dhbw.de/startseite.html"            );
             final LinkEintrag eintrag5 = new LinkEintrag( "YouTube"  , "https://www.youtube.com/channel/UCe5bTJ_lECQ7DiU_NXQMilQ" );
             
-            LinkBaum linkBaum1a = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
-            linkBaum1a.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
+            LinkBaum linkBaum1 = new LinkBaum( "dhbw-ka", "DHBW Karlsruhe", "Duale Hochschule Baden-Württemberg Karlsruhe" );
+            linkBaum1.addLinkEintraege( eintrag1, eintrag2, eintrag3, eintrag4, eintrag5 );
             
-            //linkBaum1.setVersion( 1L );
+            linkBaum1 = _linkBaumService.saveMitVersion( linkBaum1 );
             
-            LinkBaum linkBaum1b = _linkBaumRepo.save( linkBaum1a );
-            LOG.info( "Version1a: {}", linkBaum1b.getVersion() );
+            linkBaum1.setBeschreibung( "Duale Hochschule Baden-Württemberg in Karlsruhe" );
             
-            LinkBaum existing = _linkBaumRepo.findById(linkBaum1a.getId()).get();
-            LOG.info( "Version1b: {}", linkBaum1a.getVersion() );
-            existing.setBeschreibung( "Duale Hochschule Baden-Württemberg in Karlsruhe" );
-            //existing.setVersion( 2L );
-            _linkBaumRepo.save( existing );
+            _linkBaumService.saveMitVersion( linkBaum1 );
             
             final long anzahlNachher = _linkBaumRepo.count();
             LOG.info( "Anzahl Link-Bäume in Datenbank nach dem Laden der Demo-Daten: {}", anzahlNachher );
