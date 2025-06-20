@@ -19,6 +19,7 @@
 
     <name>Link-Baum</name>
     <description>Link-Baum (Landingpage mit Link-Sammlung)</description>
+    <inceptionYear>2025</inceptionYear>
 
     <properties>
         <java.version>21</java.version>
@@ -50,9 +51,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>5.2.0</version>
         </dependency>
-
 
     </dependencies>
 
