@@ -3,11 +3,14 @@
 <br>
 
 Dieses Repo enthält eine Spring-Boot-Anwendung, die die Verwendung der Key-Value-Datenbank "Redis" demonstriert.
-Die Anwendung ist eine Web-App, die einen sog. 
+Die Anwendung ist eine Web-App, die einen sog.
 [Link-Baum](https://later.com/social-media-glossary/link-tree/) darstellt.
 
 Für die Anwendung von Redis wird [Spring Data Redis](https://spring.io/projects/spring-data-redis)
-verwendet, siehe hierzu auch [dieses Tutorial](https://www.baeldung.com/spring-data-redis-tutorial).
+verwendet, siehe hierzu auch
+[das offizielle Tutorial](https://docs.spring.io/spring-data/redis/reference/repositories.html)
+und
+[dieses Tutorial auf baeldung.com](https://www.baeldung.com/spring-data-redis-tutorial).
 
 <br>
 
