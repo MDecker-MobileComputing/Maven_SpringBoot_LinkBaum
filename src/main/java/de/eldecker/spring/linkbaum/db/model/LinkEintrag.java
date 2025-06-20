@@ -3,6 +3,7 @@ package de.eldecker.spring.linkbaum.db.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 /**
  * Repräsentiert einen Eintrag in einem Link-Baum, also z.B.
  * einen Link auf ein Social-Media-Profil.

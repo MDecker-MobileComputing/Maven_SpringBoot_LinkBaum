@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+
 /**
  * Konfiguration für Redis-Client/Treiber, nach
  * <a href="https://www.baeldung.com/spring-data-redis-tutorial#1-java-configuration">diesem Tutorial</a>.

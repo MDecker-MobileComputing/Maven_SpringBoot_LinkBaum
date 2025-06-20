@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import de.eldecker.spring.linkbaum.db.LinkBaumRepo;
 import de.eldecker.spring.linkbaum.db.model.LinkBaum;
 import de.eldecker.spring.linkbaum.logik.LinkBaumService;
 
@@ -24,9 +25,9 @@ public class ThymeleafWebController {
 
     private Logger LOG = LoggerFactory.getLogger( ThymeleafWebController.class );
 
-    /** Bean mit Geschäftslogik. */ 
+    /** Bean für DB-Zugriff. */
     @Autowired
-    private LinkBaumService _linkBaumService;
+    private LinkBaumRepo _linkBaumRepo;
 
     
     /**
@@ -42,11 +43,10 @@ public class ThymeleafWebController {
     public String linkBaum( @PathVariable String linkBaumKey,
                             Model model ) {
     	
-        final Optional<LinkBaum> linkBaumOptional = 
-        				_linkBaumService.erhoeheZugriffsZaehler( linkBaumKey );           
+        final Optional<LinkBaum> linkBaumOptional = _linkBaumRepo.findById( linkBaumKey );           
         if ( linkBaumOptional.isPresent() ) {
             
-        	LOG.info( "Link-Baum mit Schluessel=\"{}\" gefunden.", linkBaumKey );
+        	LOG.info( "Link-Baum mit Key=\"{}\" gefunden.", linkBaumKey );
         	
             final LinkBaum linkBaum = linkBaumOptional.get();
                                     
@@ -57,7 +57,7 @@ public class ThymeleafWebController {
         } else {
          
             final String fehlermeldung = 
-                    format( "Keinen Link-Baum mit Schluessel \"%s\" gefunden.", linkBaumKey );
+                    format( "Keinen Link-Baum mit Key \"%s\" gefunden.", linkBaumKey );
                    
             LOG.error( fehlermeldung );
             

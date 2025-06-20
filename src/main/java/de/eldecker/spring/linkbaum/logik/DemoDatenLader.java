@@ -12,6 +12,7 @@ import de.eldecker.spring.linkbaum.db.LinkBaumRepo;
 import de.eldecker.spring.linkbaum.db.model.LinkBaum;
 import de.eldecker.spring.linkbaum.db.model.LinkEintrag;
 
+
 /**
  * Bean erzeugt direkt nach Start der Anwendung neue Link-Bäume, wenn noch kein
  * einziger Link-Baum vorhanden ist.

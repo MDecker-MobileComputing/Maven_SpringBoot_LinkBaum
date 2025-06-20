@@ -36,9 +36,6 @@ public class LinkBaum {
     
     /** Beschreibungstext, z.B. mit Kurzvorstellung des Influencers. */
     private String _beschreibung;
-
-    /** Gesamtanzahl der Aufrufe des Link-Baums. */
-    private int _zugriffszaehler = 0;
     
     /** Eigentliche Links. */
     private List<LinkEintrag> _linkEintragList;
@@ -107,16 +104,7 @@ public class LinkBaum {
         
         _linkEintragList = linkEintragList;
     }
-    
-    public int getZugriffszaehler() {
 
-        return _zugriffszaehler;
-    }
-
-    public void setZugriffszaehler( int zugriffszaehler ) {
-
-        _zugriffszaehler = zugriffszaehler;
-    }
     
     public Long getVersion() {
 
@@ -154,7 +142,6 @@ public class LinkBaum {
     	
     	return Objects.hash( _id, 
     			             _beschreibung, 
-    			             _zugriffszaehler, 
     			             _linkEintragList 
     			           );    	
     }
@@ -170,8 +157,7 @@ public class LinkBaum {
     		
     		return _id.equals(              that._id              ) &&
     			   _beschreibung.equals(    that._beschreibung    ) &&
-    			   _linkEintragList.equals( that._linkEintragList ) &&
-     			   _zugriffszaehler == that._zugriffszaehler;
+    			   _linkEintragList.equals( that._linkEintragList );
 
     	} else {
     		
@@ -190,7 +176,8 @@ public class LinkBaum {
     @Override
     public String toString() {
 
-        return String.format( "Link-Baum mit ID={}: \"{}\"", _id, _titel );        		
+        return String.format( "Link-Baum mit ID={}: \"{}\"", 
+        		              _id, _titel );        		
     }
 
 }
