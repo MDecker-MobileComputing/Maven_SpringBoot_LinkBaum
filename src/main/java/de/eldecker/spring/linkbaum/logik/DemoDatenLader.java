@@ -28,6 +28,7 @@ public class DemoDatenLader implements ApplicationRunner {
     @Autowired
     private LinkBaumService _linkBaumService;
     
+    
     @Override
     public void run( ApplicationArguments args ) throws Exception {
         
@@ -35,7 +36,8 @@ public class DemoDatenLader implements ApplicationRunner {
         LOG.info( "Anzahl Link-Baeume in Datenbank: {}", anzahlVorher );
         if ( anzahlVorher > 0 ) {
 
-            LOG.info( "Es sind bereits Link-Baeume in der Datenbank, lade deshalb keine Demo-Daten." ); 
+            LOG.info( 
+            		"Es sind bereits Link-Baeume in der Datenbank, lade deshalb keine Demo-Daten." ); 
             
         } else {
             
@@ -43,10 +45,16 @@ public class DemoDatenLader implements ApplicationRunner {
         	erzeugeLinkBaumAndroidDev();
         	
             final long anzahlNachher = _linkBaumRepo.count();
-            LOG.info( "Anzahl Link-Baeume in Datenbank nach dem Laden der Demo-Daten: {}", anzahlNachher );
+            LOG.info( 
+            		"Anzahl Link-Baeume in Datenbank nach dem Laden der Demo-Daten: {}", 
+            		anzahlNachher );
         }
     }
     
+    
+    /**
+     * Link-Baum "DHBW" erzeugen.
+     */
     private void erzeugeLinkBaumDHBW() {
 
         final LinkEintrag eintrag1 = new LinkEintrag( "Facebook" , "https://www.facebook.com/DHBWKarlsruhe"                   );
@@ -60,7 +68,11 @@ public class DemoDatenLader implements ApplicationRunner {
         
         _linkBaumService.saveMitVersion( linkBaum );
     }
+
     
+    /**
+     * Link-Baum "Android-Entwicklung" erzeugen.
+     */
     private void erzeugeLinkBaumAndroidDev() {
     	
     	final LinkEintrag eintrag1 = new LinkEintrag( "Blog"       , "https://android-developers.googleblog.com/"       );
